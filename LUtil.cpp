@@ -59,7 +59,7 @@ void render()
             glVertex2f( -50.f,  50.f );
         glEnd();
     }
-    else
+    else if (gColorMode == COLOR_MODE_MULTI)
     {
         //RYGB Mix
         glBegin( GL_QUADS );
@@ -67,6 +67,16 @@ void render()
             glColor3f( 1.f, 1.f, 0.f ); glVertex2f(  50.f, -50.f );
             glColor3f( 0.f, 1.f, 0.f ); glVertex2f(  50.f,  50.f );
             glColor3f( 0.f, 0.f, 1.f ); glVertex2f( -50.f,  50.f );
+        glEnd();
+    }
+    else if (gColorMode == COLOR_MODE_MAGENTA)
+    {
+        glBegin(GL_QUADS)
+            glColor3f(1.f, 0.f, 0.f);
+            glVertex2f(-50.f, -50.f);
+            glVertex2f(50.f, -50.f);
+            glVertex2f(50.f, 50.f);
+            glVertex2f(-50.f, 50.f);
         glEnd();
     }
 
@@ -84,7 +94,11 @@ void handleKeys( unsigned char key, int x, int y )
         {
             gColorMode = COLOR_MODE_MULTI;
         }
-        else
+        else if (gColorMode == COLOR_MODE_MULTI)
+        {
+            gColorMode = COLOR_MODE_MAGENTA;
+        }
+        else if (gColorMode == COLOR_MODE_MAGENTA)
         {
             gColorMode = COLOR_MODE_CYAN;
         }
@@ -92,20 +106,25 @@ void handleKeys( unsigned char key, int x, int y )
     else if( key == 'e' )
     {
         //Cycle through projection scales
-        if( gProjectionScale == 1.f )
+        if( gProjectionScale == 0.5f )
         {
-            //Zoom out
+            gProjectionScale = 1.f;
+        }
+        else if( gProjectionScale == 1.f )
+        {
+            gProjectionScale = 1.5f;
+        }
+        else if( gProjectionScale == 1.5f )
+        {
             gProjectionScale = 2.f;
         }
-        else if( gProjectionScale == 2.f )
+        else if (gProjectionScale == 2.f)
         {
-            //Zoom in
-            gProjectionScale = 0.5f;
+            gProjectionScale = 2.5f;
         }
-        else if( gProjectionScale == 0.5f )
+        else if (gProjectionScale == 2.5f)
         {
-            //Regular zoom
-            gProjectionScale = 1.f;
+            gProjectionScale = 0.5f;
         }
 
         //Update projection matrix
